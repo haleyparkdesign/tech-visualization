@@ -1,0 +1,49 @@
+body {
+    font-family: 'Work Sans', sans-serif;
+}
+
+.content {
+    max-width: 960px;
+    margin: 100px auto 0;
+}
+
+.masthead {
+    text-align: center;
+    width: 100%;
+    height: 620px;
+    background-color: #073330;
+    position: relative;
+}
+
+.masthead .text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fdb589;
+    mix-blend-mode: difference;
+}
+
+.masthead h1 {
+    font-size: 4.9em;
+    line-height: 1.11em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.masthead p {
+    font-size: 1.1em;
+}
+
+.masthead .dollar {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url("dollarbill_bw.png");
+    position: absolute;
+    mix-blend-mode: soft-light;
+    top: 0px;
+    opacity: 0.5;
+}
