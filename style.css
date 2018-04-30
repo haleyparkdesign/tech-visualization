@@ -16,7 +16,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #ffa279;
+    color: #ff9f75;
     mix-blend-mode: difference;
     width: 100%
 }
@@ -70,4 +70,108 @@ body {
 
 #plot3 {
     margin: 0 auto;
+}
+
+/*
+
+
+.tooltip {
+    position: absolute;
+    visibility: hidden;
+    color: #efefef;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 6px;
+    text-align: center;
+    z-index: 9999;
+    padding: 1em;
+    line-height: 1.5em;
+}
+
+.tooltip-inner {
+    background-color: rgba(0, 0, 0, 0.7);
+}*/
+
+.sketch3-container .source {
+    font-size: 0.8em;
+    color: #939393;
+}
+
+/* The switch - the box around the slider */
+
+.switch-container {
+    float: right;
+}
+
+.switch-container span {
+    vertical-align: top;
+    transform: translateY(-15%);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 2.8em;
+    height: 1.45em;
+    margin: 0 0.2em;
+}
+
+/* Hide default HTML checkbox */
+
+.switch input {
+    display: none;
+}
+
+/* The slider */
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    width: 1em;
+    height: 1em;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 3px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(21px);
+    -ms-transform: translateX(21px);
+    transform: translateX(21px);
+}
+
+/* Rounded sliders */
+
+.slider.round {
+    border-radius: 100px;
+}
+
+.slider.round:before {
+    border-radius: 100%;
+}
+
+#plot3 .axis path {
+    stroke: transparent;
 }
