@@ -21,7 +21,7 @@ d3.csv("payGap_race_sex.csv", function (data) {
     console.log(data);
     
     
-    var width =  SalaryLabelWidth + SalaryLabelPadding + data.length * barWidth * multiplier;
+    var width =   SalaryLabelPadding + data.length * barWidth * multiplier;
     
     // accessor functions
     var raceSexLabel = function (d) {
