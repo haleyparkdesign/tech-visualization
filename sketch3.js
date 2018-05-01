@@ -17,7 +17,10 @@ var svg = d3.select("#plot3").append("svg")
     },
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
-    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .attr('transform', 'translate(' + companyLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')');
+
 
 var x = d3.scaleLinear()
     .rangeRound([0, maxBarWidth]);
@@ -33,75 +36,110 @@ var colors = d3.scaleOrdinal()
 var stack = d3.stack()
     .offset(d3.stackOffsetExpand);
 
-d3.csv("diversity.csv", type, function (error, data) {
-    if (error) throw error;
+var tooltip = d3.select("#plot3").append("div")
+    .attr("class", "toolTip")
+    .style("display", "none");
 
-    data.sort(function (a, b) {
-        return b[data.columns[1]] / b.total - a[data.columns[1]] / a.total;
+var thisData;
+
+// add the X gridlines
+g.append("g")
+    .attr("class", "grid")
+    .attr("transform", "translate(0," + width + ")")
+    .call(d3.axisBottom(x)
+        .ticks(10)
+        .tickSize(-width)
+        .tickFormat("")
+    ).selectAll("line").style("stroke", "#ccc");
+
+var axisX = g.append("g")
+    .attr("class", "axis axis--x")
+    .call(d3.axisTop(x).ticks(10, "%"));
+
+axisX.selectAll("text")
+    .style("fill", "#282828")
+    .attr("font-size", "15px")
+    .attr("font-family", "Work Sans");
+
+var axisY = g.append("g")
+    .attr("class", "axis axis--y")
+    .call(d3.axisLeft(y));
+
+axisY.selectAll("text")
+    .style("fill", "#282828")
+    .attr("font-size", "15px")
+    .attr("font-family", "Work Sans");
+
+axisY.selectAll("line")
+    .style("stroke", "transparent");
+
+d3.csv("diversity.csv", type, function (error, data) {
+    draw();
+
+    d3.selectAll("#sort").on("change", function () {
+        if (this.value == "name") {
+            data.sort(function (a, b) {
+                return d3.descending(b.Company, a.Company);
+            });
+        } else if (this.value == "female") {
+            data.sort(function (a, b) {
+                return d3.ascending(b.Female, a.Female);
+            });
+        }
+        console.log(data);
+        g.selectAll(".bars").remove(); //remove all bars before redraw
+        draw();
     });
 
-    y.domain(data.map(function (d) {
-        return d.Company;
-    }));
+    if (error) throw error;
 
-    colors.domain(data.columns.slice(1));
+    function draw() {
+        y.domain(data.map(function (d) {
+            return d.Company;
+        }));
 
-    g.attr('transform', 'translate(' + companyLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')');
+        axisY.transition()
+            .duration(500)
+            .call(d3.axisLeft(y));
 
+        var bars = g.selectAll(".bars")
+            .data(stack.keys(data.columns.slice(1))(data))
+            .enter().append("g")
+            .attr("class", "bars")
+            .attr("fill", function (d) {
+                return colors(d.key);
+            });
 
-    var axisY = g.append("g")
-        .attr("class", "axis axis--y")
-        .call(d3.axisLeft(y))
+        var rects = bars.selectAll("rect")
+            .data(function (d) {
+                return d;
+            })
+            .enter().append("rect")
+            .attr("x", function (d) {
+                return x(d[0]);
+            })
+            .attr("width", function (d) {
+                return x(d[1]) - x(d[0]);
+            })
+            .attr("height", y.bandwidth())
 
-    axisY.selectAll("text")
-        .style("fill", "#282828")
-        .attr("font-size", "15px")
-        .attr("font-family", "Work Sans");
+            .attr("y", function (d) {
+                return y(d.data.Company);
+            })
 
-    axisY.selectAll("line")
-        .style("stroke", "transparent");
+        rects.on("mousemove", function (d) {
+                tooltip
+                    .style("left", d3.event.pageX + 10 + "px")
+                    .style("top", d3.event.pageY - 70 + "px")
+                    .style("display", "inline-block")
+                    .html(d.data.Company + "<br>" + "Female: " + d.data.Female + "%" + "<br>" + "Male: " + d.data.Male + "%");
+            })
+            .on("mouseout", function (d) {
+                tooltip.style("display", "none");
+            });
 
-    var axisX = g.append("g")
-        .attr("class", "axis axis--x")
-        .call(d3.axisTop(x).ticks(10, "%"));
-
-    axisX.selectAll("line")
-        .attr("y1", function () {
-            return 3
-        })
-        .attr("y2", function () {
-            return 773
-        })
-        .style("stroke", "#ccc");
-
-    axisX.selectAll("text")
-        .style("fill", "#282828")
-        .attr("font-size", "15px")
-        .attr("font-family", "Work Sans");
-
-    var serie = g.selectAll(".serie")
-        .data(stack.keys(data.columns.slice(1))(data))
-        .enter().append("g")
-        .attr("class", "serie")
-        .attr("fill", function (d) {
-            return colors(d.key);
-        })
-
-    serie.selectAll("rect")
-        .data(function (d) {
-            return d;
-        })
-        .enter().append("rect")
-        .attr("x", function (d) {
-            return x(d[0]);
-        })
-        .attr("y", function (d) {
-            return y(d.data.Company);
-        })
-        .attr("width", function (d) {
-            return x(d[1]) - x(d[0]);
-        })
-        .attr("height", y.bandwidth());
+        colors.domain(data.columns.slice(1));
+    }
 });
 
 function type(d, i, columns) {

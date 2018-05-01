@@ -25,7 +25,7 @@
             <div id="sketch1"></div>
         </div>
         <br><br><br>
-        
+
         <div class="sketch2-container">
             <h2>Even worse for women of color.</h2>
             <div id="plot2">
@@ -37,26 +37,27 @@
             <p>Women still don’t get hired as much as men in top tech companies. Women are even scarcer in the leadership positions.</p>
             <div id="plot3">
                 <h3>Percentage of Women in Major Tech Companies</h3>
-                <label>Sort by: </label>
-                <select id="sortKey">
-                 <option value="default">-</option>
+                <div class="interactivity">
+                    <span>Sort by: </span>
+                    <select id="sort">
                   <option value="female">Percentage of women</option>
                   <option value="name">Company Name</option>
                 </select>
-                <div class="switch-container">
-                    <span>All employees</span>
-                    <label class="switch">
+                    <div class="switch-container">
+                        <span>All employees</span>
+                        <label class="switch">
                       <input type="checkbox">
                       <span class="slider round"></span>
                     </label>
-                    <span>Executives</span>
+                        <span>Executives</span>
+                    </div>
                 </div>
-                <br><br>
+                <br>
             </div><br>
-            <span class="source">Source: </span>
+            <span class="source">Source: <a href="https://docs.google.com/spreadsheets/d/1e5jevLJTK9Aayob2msk4Ss9qIMCqfris4m_m0kXO-7s/edit#gid=1538486275">Information is Beautiful</a></span>
         </div>
     </div>
-
+    <div class="footer">Made with ☕ and 💕 by Daniela Carrasco and Haley Park, for 4.032 Information and Visualization.</div>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="sketch3.js"></script>
     <script src="sketch2.js"></script>
