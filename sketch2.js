@@ -305,8 +305,8 @@ function draw() {
     function drawGreyedBars(_block){
         var womenPick = _block[0];
         var malePick = _block[1];
-        console.log(womenPick);
-        console.log(malePick);
+//        console.log(womenPick);
+//        console.log(malePick);
         
         //Percentage Label
         var wSal = getSalaryForSexRace(womenPick.sex, womenPick.race);
