@@ -307,21 +307,22 @@ function draw() {
                                 else return '#FF7B5C'; }})
             .attr('opacity', function(d){
                                 if(greyOut(d)) 
-                                { return 0.5;}
+                                { return 0.1;}
                             else {
                                 return 1.0;
                                  }
             });
-
+        //remove the ones no longer being used
         greyBarContainer.selectAll("rect").exit()
             .transition()
-            .duration(500)
+            .duration(1000)
             .style("opacity", 1)
             .remove();
-
+        
+        //update the bars
         greyBarContainer.selectAll("rect")
             .transition()
-            .duration(500)
+            .duration(1000)
             .attr('fill', function(d) {
                             if(greyOut(d)) 
                                 { return "#fff";}
@@ -336,6 +337,29 @@ function draw() {
                                 return 1.0;
                                  }
             });
+        
+         labelsContainerSex.selectAll('text')
+            .transition()
+            .duration(1000)
+            .attr('opacity', function(d){
+                                if(greyOut(d)) 
+                                { return 0.4;}
+                            else {
+                                return 1.0;
+                                 }
+            });
+
+        labelsContainerRace.selectAll('text')
+            .transition()
+            .duration(1000)  
+            .attr('opacity', function(d){
+                                if(greyOut(d)) 
+                                { return 0.4;}
+                            else {
+                                return 1.0;
+                                 }
+            });
+        
         }
     draw.drawGreyBars = drawGreyedBars;
     draw.drawGreyBars([selectedBarsToDisplayWomen, selectedBarToDisplayMale]);
