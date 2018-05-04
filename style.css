@@ -219,7 +219,7 @@ input:checked + .slider:before {
 }
 
 #male-button{
-    background: #ffa279;
+    background: #FF7B5C;
 }
 
 #women-button.dropdown-button:hover{
@@ -227,7 +227,7 @@ input:checked + .slider:before {
 }
 
 #male-button.dropdown-button:hover{
-    background: #f88b5b;
+    background: #ff5f3a;
 }
 
 
@@ -263,15 +263,9 @@ input:checked + .slider:before {
     bottom: 0px;
     margin-top: 2px;
     top: 100%;
-    min-width:90%; 
+    min-width:100%; 
     transition: all .3s ease;
 }
-
-/*
-#women-category.dropdown ul{
-    overflow: visible;
-} 
-*/
 
 .dropdown li {
     background: #fff;
@@ -294,7 +288,7 @@ input:checked + .slider:before {
 }
 
 #male-category.dropdown li.check {
-  background:#ffa279;
+  background:#FF7B5C;
 }
 
 .dropdown li.check:after {
