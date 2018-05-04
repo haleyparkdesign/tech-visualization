@@ -14,6 +14,12 @@ var selectedBarsToDisplayWomen = {race:"Average", sex:"Female"};
 var selectedBarToDisplayMale = {race:"Average", sex:"Male"};
 var globalData;
 
+
+var tooltip2 = d3.select("#plot2").append("div")
+    .attr("class", "toolTip2")
+    .style("display", "none");
+
+
 //activate drop down menus to hover 
 //Initialize interactive header 
 function initOptionHeader() {
@@ -134,7 +140,6 @@ function draw() {
     //accessor getSalaryForSexRace 
     function getSalaryForSexRace(sex, race) {
         for (var i=0; i<sortedData.length; i++){
-            console.log(sortedData[i]);
             if (sortedData[i].sex === sex && sortedData[i].race ===race)
                 return sortedData[i].salary;
         }
@@ -173,7 +178,6 @@ function draw() {
     var x = d3.scaleLinear().domain([0, globalData.length]).range([SalaryLabelWidth + gridPaddingHorizontal + SalaryLabelPadding, width]);
     
      var xTextR = function (d, i) {
-//        console.log(i);
         var val = x(i) + barWidth/2 + d.race.length;
          if(d.race === 'Hispanic') {
              val += 10;
@@ -184,13 +188,11 @@ function draw() {
          if(d.race === 'White') { 
             val += 2;
          }
-//        console.log(val);
         return val;
     };
     
     
     var xTextS = function (d, i) {
-//        console.log(i);
         var val = x(i) + barWidth/2 + d.sex.length;
         if(d.sex === 'Male') {
              val -= 1;
@@ -198,17 +200,14 @@ function draw() {
          if(d.sex === 'Female') {
              val += 7;
          }
-//        console.log(val);
         return val;
     };
     
      var yTextS = function (d, i) {
-//        
         return saltoHeight(d,i) - RaceSexLabelWidth;
     };
     
      var yTextR = function (d, i) {
-//        
         return saltoHeight(d,i) - RaceSexLabelWidth - 17;
     };
     
@@ -272,7 +271,7 @@ function draw() {
     var barsContainer = plot2.append('g')
         .attr('transform', 'translate(' + RaceSexLabelPadding + ',' + 0 + ')');
 
-    barsContainer.selectAll("rect").data(sortedData).enter().append("rect")
+    var rects = barsContainer.selectAll("rect").data(sortedData).enter().append("rect")
         .attr('x', xBar)
         .attr('y', saltoHeight)
         .attr('height', yBar)
@@ -282,6 +281,21 @@ function draw() {
             if(d.sex === 'Female') {return '#007F75'}
             else return '#FF7B5C';
     });
+    
+    //interactivity of tooltip
+    rects.on("mousemove", function(d){
+        tooltip2
+            .style("left", d3.event.pageX + 10 + "px")
+            .style("top", d3.event.pageY - 70 + "px")
+            .style("display", "inline-block");
+        
+        tooltip2.html("Salary:<br>" + "$" + d.salary + ",000");
+
+    })
+    .on("mouseout", function(d){
+        tooltip2.style("display", "none");
+    });
+    
     
     var greyBarContainer = plot2.append('g')
         .attr('transform', 'translate(' + RaceSexLabelPadding + ',' + 0 + ')');
@@ -309,14 +323,14 @@ function draw() {
         }
         
         //remove the ones no longer being used
-        barsContainer.selectAll("rect").exit()
+        rects.exit()
             .transition()
             .duration(1000)
             .style("opacity", 1)
             .remove();
         
         //update the bars
-        barsContainer.selectAll("rect")
+        rects
             .transition()
             .duration(1000)
             .attr('fill', function(d) {

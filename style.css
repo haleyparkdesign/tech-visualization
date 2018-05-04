@@ -86,6 +86,22 @@ a {
     color: #fff;
     font-size: .8em;
     line-height: 1.2em;
+    border-radius: 10px;
+}
+
+
+.toolTip2 {
+    position: absolute;
+    display: none;
+    min-width: 55px;
+    height: auto;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    color: #fff;
+    font-size: .8em;
+    line-height: 1.2em;
+    text-align: center;
+    border-radius: 10px;
 }
 
 .sketch3-container .interactivity span, select {
