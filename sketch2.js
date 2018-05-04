@@ -105,21 +105,16 @@ function draw() {
     
     // accessor functions
     var raceSexLabel = function (d) {
-//        console.log(d);
         var racesex = d['race'] + "\n" + d['sex'];
-//        racesex = racesex.value/split(/\r\n|\r|\n/g);
         return racesex;
     };
     
      var raceLabel = function (d) {
-
         return d['race'];
     };
     
     
      var sexLabel = function (d) {
-//        console.log(d); 
-      
         return d['sex'];
     };
     
@@ -134,6 +129,18 @@ function draw() {
     });
     
     globalData = sortedData;
+    
+    
+    //accessor getSalaryForSexRace 
+    function getSalaryForSexRace(sex, race) {
+        for (var i=0; i<sortedData.length; i++){
+            console.log(sortedData[i]);
+            if (sortedData[i].sex === sex && sortedData[i].race ===race)
+                return sortedData[i].salary;
+        }
+    }   
+    
+    
     
     //extents of salaries 
     var salaryRange = d3.extent(globalData, function(d){ return d.salary });
@@ -279,57 +286,43 @@ function draw() {
     var greyBarContainer = plot2.append('g')
         .attr('transform', 'translate(' + RaceSexLabelPadding + ',' + 0 + ')');
     
+    
     //draw greyed out bars dynamically
     function drawGreyedBars(_block){
         var womenPick = _block[0];
         var malePick = _block[1];
         console.log(womenPick);
         console.log(malePick);
+        
+        //Percentage Label
+        var wSal = getSalaryForSexRace(womenPick.sex, womenPick.race);
+        var mSal = getSalaryForSexRace(malePick.sex, malePick.race);
+        
+        var percentageToDisplay =  Math.round((wSal/mSal) * 100);
+        
+        document.getElementById("percentSalary").innerHTML = percentageToDisplay + "%";
+        
+        //Bars
         function greyOut(point){
              var greyedOut = !(womenPick.sex == point.sex && womenPick.race == point.race) && !(malePick.sex == point.sex && malePick.race == point.race);
-        
-            return greyedOut;
-                                                                                                                               
+            return greyedOut;            
         }
         
-        greyBarContainer.selectAll("rect").data(sortedData).enter().append("rect")
-            .attr('x', xBar)
-            .attr('y', saltoHeight)
-            .attr('height', yBar)
-            .attr('width', barWidth)
-            .attr('stroke', 'white')
-            .attr('fill', function(d) {
-                            if(greyOut(d)) 
-                                { return "#fff";}
-                            else {
-                                if(d.sex === 'Female') 
-                                    {return '#007F75'}
-                                else return '#FF7B5C'; }})
-            .attr('opacity', function(d){
-                                if(greyOut(d)) 
-                                { return 0.1;}
-                            else {
-                                return 1.0;
-                                 }
-            });
         //remove the ones no longer being used
-        greyBarContainer.selectAll("rect").exit()
+        barsContainer.selectAll("rect").exit()
             .transition()
             .duration(1000)
             .style("opacity", 1)
             .remove();
         
         //update the bars
-        greyBarContainer.selectAll("rect")
+        barsContainer.selectAll("rect")
             .transition()
             .duration(1000)
             .attr('fill', function(d) {
-                            if(greyOut(d)) 
-                                { return "#fff";}
-                            else {
-                                if(d.sex === 'Female') 
-                                    {return '#007F75'}
-                                else return '#FF7B5C'; }})
+                            if(d.sex === 'Female') 
+                                {return '#007F75'}
+                            else return '#FF7B5C'; })
             .attr('opacity', function(d){
                                 if(greyOut(d)) 
                                 { return 0.4;}
