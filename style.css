@@ -109,7 +109,7 @@ a {
     font-size: 15px;
 }
 
-.sketch3-container .source {
+.source {
     font-size: 0.8em;
     color: #939393;
     font-weight: 300;
@@ -259,12 +259,24 @@ input:checked + .slider:before {
     color: #fff;
 }
 
+/*percentage label */
+#percentSalary{
+    color: #007F75;
+    font-size: 220%; 
+    font-weight: 650;
+    vertical-align:bottom;
+/*
+    display: inline-block;
+    line-height: 30px;
+*/
+}
+
 .dropdown ul.active {
-  visibility:visible;
+    visibility:visible;
     overflow: visible;
-  transition:all .3s ease;
-  transform:scaleY(1);
-  color:#0069d3;
+    transition:all .3s ease;
+    transform:scaleY(1);
+    color:#0069d3;
 }
 
 .dropdown ul {
@@ -311,11 +323,6 @@ input:checked + .slider:before {
 .dropdown li.check:after {
   content:'';
   position:absolute;
-/*
-  height:15px;
-  width:3px;
-  background:#000;
-*/
   top:0;
   bottom:0;
   margin-top:auto;
@@ -326,11 +333,6 @@ input:checked + .slider:before {
 .dropdown li.check:before {
   content:'';
   position:absolute;
-/*
-  height:3px;
-  width:9px;
-  background:#000;
-*/
   top:6px;
   bottom:0;
   margin-top:auto;
