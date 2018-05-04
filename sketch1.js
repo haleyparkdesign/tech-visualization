@@ -89,6 +89,34 @@ var sketch1 = (function () { //use IIFE to avoid variable collision
         // Add the Y Axis
         svg.append("g")
             .call(d3.axisLeft(y));
+        
+        //add dots 
+        var plotDotsMales = svg.append("g").attr("class", "dots");
+        
+        
+        plotDotsMales 
+            .selectAll(".maleDots")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("class", "maleDots")
+            .attr("cx", function(d){ return x(d.Year)})
+            .attr("cy", function(d){ return y(d.men)})
+            .attr("r", 5);
+        
+        
+        var plotDotsFemales = svg.append("g").attr("class", "dots")
+        
+        plotDotsFemales
+            .selectAll(".femaleDots")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("class", "femaleDots")
+            .attr("cx", function(d){ return x(d.Year)})
+            .attr("cy", function(d){ return y(d.women)})
+            .attr("r", 5);
+        
     });
 
     var parseTime = d3.timeParse("%Y%m%d");

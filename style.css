@@ -89,6 +89,18 @@ a {
 
 }
 
+/*plot 1 dots*/
+
+.maleDots {
+    fill: #FF7B5C;
+}
+
+.femaleDots {
+    fill: #007F75;
+}
+
+
+
 #plot3 {
     margin: 0 auto;
 }
