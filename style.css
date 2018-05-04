@@ -83,7 +83,6 @@ a {
     height: auto;
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.7);
     padding: 10px;
-    text-align: center;
     color: #fff;
     font-size: .8em;
     line-height: 1.2em;
@@ -165,6 +164,10 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 100%;
+}
+
+#plot3 svg .bars {
+    cursor: pointer;
 }
 
 #plot3 .axis path, line {

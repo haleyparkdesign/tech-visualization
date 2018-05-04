@@ -1,22 +1,22 @@
 var valueLabelWidth = 80; // space reserved for value labels (right)
-var barHeight = 20; // height of one bar
 var companyLabelWidth = 120; // space reserved for bar labels
 var companyLabelPadding = 15; // padding between bar and bar labels (left)
 var gridLabelHeight = 18; // space reserved for gridline labels
 var gridChartOffset = 10; // space between start of grid and first bar
 var maxBarWidth = 700; // width of the bar with the max value
+var exec = false;
 
 var svg = d3.select("#plot3").append("svg")
     .attr("width", maxBarWidth + companyLabelWidth + valueLabelWidth)
-    .attr("height", 800),
+    .attr("height", 698),
     margin = {
         top: 20,
         right: 60,
         bottom: 30,
         left: 40
     },
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom,
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
     g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .attr('transform', 'translate(' + companyLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')');
@@ -26,7 +26,7 @@ var x = d3.scaleLinear()
     .rangeRound([0, maxBarWidth]);
 
 var y = d3.scaleBand()
-    .rangeRound([0, width])
+    .rangeRound([0, height])
     .padding(0.3)
     .align(0.1);
 
@@ -74,7 +74,21 @@ axisY.selectAll("line")
     .style("stroke", "transparent");
 
 d3.csv("diversity.csv", type, function (error, data) {
+    console.log(data);
     draw();
+
+    d3.selectAll("#execSwitch").on("change", function () {
+        if (exec == false) {
+            exec = true;
+            g.selectAll(".bars").remove();
+            draw(exec);
+        } else {
+            exec = false;
+            g.selectAll(".bars").remove();
+            draw(exec);
+        }
+        console.log(exec);
+    })
 
     d3.selectAll("#sort").on("change", function () {
         if (this.value == "name") {
@@ -82,33 +96,49 @@ d3.csv("diversity.csv", type, function (error, data) {
                 return d3.descending(b.Company, a.Company);
             });
         } else if (this.value == "female") {
-            data.sort(function (a, b) {
-                return d3.ascending(b.Female, a.Female);
-            });
+            if (exec) {
+                data.sort(function (a, b) {
+                    return d3.ascending(b.FemaleLeadership, a.FemaleLeadership);
+                });
+            } else {
+                data.sort(function (a, b) {
+                    return d3.ascending(b.Female, a.Female);
+                });
+            }
+
         }
-        console.log(data);
         g.selectAll(".bars").remove(); //remove all bars before redraw
-        draw();
+        draw(exec);
     });
 
     if (error) throw error;
 
-    function draw() {
+    function draw(executive) {
         y.domain(data.map(function (d) {
             return d.Company;
         }));
 
         axisY.transition()
-            .duration(500)
             .call(d3.axisLeft(y));
 
-        var bars = g.selectAll(".bars")
-            .data(stack.keys(data.columns.slice(1))(data))
+        if (executive) {
+            var bars = g.selectAll(".bars")
+            .data(stack.keys(data.columns.slice(3, 6))(data))
             .enter().append("g")
             .attr("class", "bars")
             .attr("fill", function (d) {
                 return colors(d.key);
             });
+        } else {
+            var bars = g.selectAll(".bars")
+            .data(stack.keys(data.columns.slice(1, 3))(data))
+            .enter().append("g")
+            .attr("class", "bars")
+            .attr("fill", function (d) {
+                return colors(d.key);
+            });
+        }
+
 
         var rects = bars.selectAll("rect")
             .data(function (d) {
@@ -132,7 +162,18 @@ d3.csv("diversity.csv", type, function (error, data) {
                     .style("left", d3.event.pageX + 10 + "px")
                     .style("top", d3.event.pageY - 70 + "px")
                     .style("display", "inline-block")
-                    .html(d.data.Company + "<br>" + "Female: " + d.data.Female + "%" + "<br>" + "Male: " + d.data.Male + "%");
+
+            if (exec) {
+                tooltip.html(d.data.Company + " - Leadership<br>" +
+                          "Female: " + d.data.FemaleLeadership + "%<br>" +
+                          "Male: " + d.data.MaleLeadership + "%");
+            } else {
+                tooltip.html(d.data.Company + "- All Employees<br>" +
+                          "Female: " + d.data.Female + "%<br>" +
+                          "Male: " + d.data.Male + "%<br>");
+            }
+
+
             })
             .on("mouseout", function (d) {
                 tooltip.style("display", "none");
@@ -143,7 +184,9 @@ d3.csv("diversity.csv", type, function (error, data) {
 });
 
 function type(d, i, columns) {
-    for (i = 1, t = 0; i < columns.length; ++i) t += d[columns[i]] = +d[columns[i]];
-    d.total = t;
+    for (i = 1, t = 0; i < columns.length; ++i) {
+        t += d[columns[i]] = +d[columns[i]];
+        d.total = 100;
+    }
     return d;
 }
