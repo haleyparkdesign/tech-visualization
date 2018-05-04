@@ -187,3 +187,143 @@ input:checked + .slider:before {
     flex-direction: column;
     padding: 0 20px;
 }
+
+/* Plot 2 header dropdowns */
+.dropdown {
+    display:inline-flex;   
+    position:relative;
+}
+
+.dropdown-button {
+    width: 200px;
+    height: auto;
+/*    text-align: center;*/
+    color: #fff;
+    box-sizing: border-box;
+    padding: 12px 40px 10px 20px;
+    border-radius: 0px;
+    position:relative;
+    cursor: pointer;
+    transition: background .3s ease; 
+}
+
+.dropdown-button:hover {
+    transition: background .3s ease;
+}
+
+#women-button{
+    background: #007F75;
+}
+
+#male-button{
+    background: #ffa279;
+}
+
+#women-button.dropdown-button:hover{
+    background: #0e6962;
+}
+
+#male-button.dropdown-button:hover{
+    background: #f88b5b;
+}
+
+
+.triangle{
+    font-size: 50%;
+    position:absolute;
+    right: 10px;
+    top: 15px;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    color: #fff;
+}
+
+.dropdown ul.active {
+  visibility:visible;
+    overflow: visible;
+  transition:all .3s ease;
+  transform:scaleY(1);
+  color:#0069d3;
+}
+
+.dropdown ul {
+    visibility: hidden;
+    overflow: hidden;
+    color:#fff;
+    transform-origin: top;
+    padding:0;
+    list-style: none;
+    box-shadow: 0px 2px 6px 0 rgba(0,0,0,0.2);
+    position:absolute;
+    left:0px;
+    bottom: 0px;
+    margin-top: 2px;
+    top: 100%;
+    min-width:90%; 
+    transition: all .3s ease;
+}
+
+/*
+#women-category.dropdown ul{
+    overflow: visible;
+} 
+*/
+
+.dropdown li {
+    background: #fff;
+    color:#000;
+    padding: 8px 10px 8px 15px;
+    box-sizing: border-box;
+    cursor:pointer;
+    transition: background .2s ease;
+    position:relative;
+}
+
+
+.dropdown li:hover {
+    background:#dbdbdb;
+    transition: background .2s ease;
+}
+
+#women-category.dropdown li.check {
+  background:#32aca2
+}
+
+#male-category.dropdown li.check {
+  background:#ffa279;
+}
+
+.dropdown li.check:after {
+  content:'';
+  position:absolute;
+/*
+  height:15px;
+  width:3px;
+  background:#000;
+*/
+  top:0;
+  bottom:0;
+  margin-top:auto;
+  transform:rotate(40deg);
+  margin-bottom:auto;
+  right:15px;
+}
+.dropdown li.check:before {
+  content:'';
+  position:absolute;
+/*
+  height:3px;
+  width:9px;
+  background:#000;
+*/
+  top:6px;
+  bottom:0;
+  margin-top:auto;
+  transform:rotate(40deg);
+  margin-bottom:auto;
+  right:19px;
+}
+
+
+

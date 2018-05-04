@@ -11,21 +11,129 @@ var multiplier = 3;
 var height = maxBarHeight  + SalaryLabelWidth + SalaryLabelPadding;
 
 
+//activate drop down menus to hover 
+
+var activeDropdown = {};
+document.getElementById('women-category').addEventListener('click',showDropdown);
+document.getElementById('male-category').addEventListener('click', showDropdown);                                                              
+function showDropdown(event){
+    console.log(event);
+    console.log(this);
+  if (activeDropdown.id && activeDropdown.id !== event.target.id) {
+    activeDropdown.element.classList.remove('active');
+  }
+  //checking if a list element was clicked, changing the inner button value
+  if (event.target.tagName === 'LI') {
+    activeDropdown.button.innerHTML = event.target.innerHTML;
+    for (var i=0;i<event.target.parentNode.children.length;i++){
+      if (event.target.parentNode.children[i].classList.contains('check')) {
+        event.target.parentNode.children[i].classList.remove('check');
+      }
+    }
+    //timeout here so the check is only visible after opening the dropdown again
+    window.setTimeout(function(){
+          event.target.classList.add('check');
+    },500)
+  }
+    
+  for (var i = 0;i<this.children.length;i++){
+    if (this.children[i].classList.contains('dropdown-selection')){
+        console.log(this.children[i]);
+        console.log(this.children[i].visibility);
+        activeDropdown.id = this.id;
+        activeDropdown.element = this.children[i];
+        this.children[i].classList.add('active');
+//        this.children[i].visibility = 'visible';
+        console.log(this.children[i]);
+        console.log(this.children[i].visibility);
+     }
+    //adding the dropdown-button to our object
+    else if (this.children[i].classList.contains('dropdown-button')){
+      activeDropdown.button = this.children[i];
+    }
+  }
+}
+
+window.onclick = function(event) {
+  if (!event.target.classList.contains('dropdown-button') && activeDropdown) {
+    activeDropdown.element.classList.remove('active');
+  }
+}
+
+//function activateDropdowns(){
+//    var activeDropdown = {};
+//    document.getElementById('women-category').addEventListener('click', dropdownActivate);
+//    document.getElementById('male-category').addEventListener('click', dropdownActivate);
+//
+//    function dropdownActivate(){
+//        if(activeDropdown.id && activeDropdown.id !== event.target.id) {
+//            activeDropdown.element.style.visibility = 'hidden';
+//        }
+//        console.log(event.target.id);
+//        if(event.target.tagName === 'LI') {
+//            activeDropdown.button.innerHTML = event.target.innerHTML;
+//            for(var i=0; i<event.target.parentNode.children.length;i++) {
+//                if(event.target.parentNode.children[i].classList.contains('check')) {
+//                    event.target.parentNode.children[i].classList.remove('check');
+//                }
+//            }
+//            //check only visible after opening the dropdown again
+//            window.setTimeout(function(){
+//                event.target.classList.add('check');
+//            },500);
+//        }
+//        
+//        for(var i=0; i<this.children.length; i++){
+//            console.log(this.children[i].classList);
+//            if(this.children[i].classList.contains('dropdown-selection')){
+//                
+//                console.log(this.children[i])
+//                activeDropdown.id = this.id;
+//                activeDropdown.element = this.children[i];
+//                this.children[i].style.visibility ="visible";
+//            }
+//            else if(this.children[i].classList.contains('dropdown-button')){
+//                activeDropdown.button = this.children[i];
+//            }
+//        }
+//    }
+//    
+////    window.onclick = function(event) {
+////        console.log(event);
+////        if (!event.target.classList.contains('dropdown-button') && !event.target.tagName==='LI'){
+////            console.log('hiding');
+////            console.log(activeDropdown.element);
+//////            activeDropdown.element.classList.remove('active')
+////      }
+////    }
+//}
+//
+//activateDropdowns();
+
+
+
+
+//getting data
 d3.csv("payGap_race_sex.csv", function (data) {
     data.forEach(function (d) {
         d.race = d.race;
         d.sex = d.sex;
         d.salary = +d.salary;
     });
-
+    
     console.log(data);
     
+    draw(data);
+    
+});
+
+function draw(data) {
     
     var width =   SalaryLabelPadding + data.length * barWidth * multiplier;
     
     // accessor functions
     var raceSexLabel = function (d) {
-        console.log(d);
+//        console.log(d);
         var racesex = d['race'] + "\n" + d['sex'];
 //        racesex = racesex.value/split(/\r\n|\r|\n/g);
         return racesex;
@@ -94,7 +202,7 @@ d3.csv("payGap_race_sex.csv", function (data) {
          if(d.race === 'White') { 
             val += 2;
          }
-        console.log(val);
+//        console.log(val);
         return val;
     };
     
@@ -108,7 +216,7 @@ d3.csv("payGap_race_sex.csv", function (data) {
          if(d.sex === 'Female') {
              val += 8;
          }
-        console.log(val);
+//        console.log(val);
         return val;
     };
     
@@ -193,4 +301,4 @@ d3.csv("payGap_race_sex.csv", function (data) {
             else return '#ffa279';
     });
     
-});
+}
