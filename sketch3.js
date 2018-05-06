@@ -45,10 +45,10 @@ var sketch3 = (function () { //use IIFE to avoid variable name collision
     // add the X gridlines
     g.append("g")
         .attr("class", "grid")
-        .attr("transform", "translate(0," + width + ")")
+        .attr("transform", "translate(0," + (height + 3) + ")")
         .call(d3.axisBottom(x)
             .ticks(10)
-            .tickSize(-width)
+            .tickSize(-height)
             .tickFormat("")
         ).selectAll("line").style("stroke", "#ccc");
 
@@ -152,7 +152,6 @@ var sketch3 = (function () { //use IIFE to avoid variable name collision
                     return x(d[1]) - x(d[0]);
                 })
                 .attr("height", y.bandwidth())
-
                 .attr("y", function (d) {
                     return y(d.data.Company);
                 })
