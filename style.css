@@ -1,4 +1,5 @@
-body, #plot1 svg text {
+body,
+#plot1 svg text {
     font-family: 'Work Sans', sans-serif;
     color: #282828;
 }
@@ -20,8 +21,7 @@ a {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #ff9f75;
-    mix-blend-mode: difference;
+    color: #ff7b5c;
     width: 100%
 }
 
@@ -36,33 +36,24 @@ a {
     font-size: 1.1em;
 }
 
-.masthead:after {
-    content: ' ';
-    width: 100%;
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-/*    background-image: url("dollarbill_bw.png");*/
-    mix-blend-mode: soft-light;
-    top: 0px;
-    opacity: 0.5;
-}
-
 .dollar {
     background-image: url("dollarbill_bw.png");
-    position: absolute;
     mix-blend-mode: soft-light;
     width: 100%;
     height: 100%;
-    background-attachment: scroll;
-    background-size: cover;
-    opacity: 0.7;
-    background-position: center center;
+    background-attachment: fixed;
+    opacity: 0.8;
+    background-size: auto 620px;
+    background-position: top center;
     background-repeat: no-repeat;
+    justify-content: center;
+}
+
+@media(max-width: 1024px) {
+    .dollar {
+        background-attachment: scroll;
+        background-size: cover;
+    }
 }
 
 .content {
@@ -85,8 +76,12 @@ a {
     line-height: 1.45em;
 }
 
-#plot1 svg text {
+#plot1 .domain {
+    stroke: #ccc;
+}
 
+.sketch1-container h3 {
+    margin-bottom: 0.5em;
 }
 
 /*plot 1 dots*/
@@ -98,8 +93,6 @@ a {
 .femaleDots {
     fill: #007F75;
 }
-
-
 
 #plot3 {
     margin: 0 auto;
@@ -118,7 +111,6 @@ a {
     border-radius: 10px;
 }
 
-
 .toolTip2 {
     position: absolute;
     display: none;
@@ -133,7 +125,20 @@ a {
     border-radius: 10px;
 }
 
-.sketch3-container .interactivity span, select {
+#plot1 .hover {
+    position: absolute;
+    min-width: 80px;
+    height: auto;
+    background: none repeat scroll transparent;
+    padding: 10px;
+    font-size: .8em;
+    line-height: 1.2em;
+    border-radius: 10px;
+    color: #282828;
+}
+
+.sketch3-container .interactivity span,
+select {
     font-size: 15px;
 }
 
@@ -211,11 +216,12 @@ input:checked + .slider:before {
     border-radius: 100%;
 }
 
-#plot3 svg .bars {
+#plot3 svg .bars, #plot1 .femaleDots, #plot1 .maleDots {
     cursor: pointer;
 }
 
-#plot3 .axis path, line {
+#plot3 .axis path,
+line {
     stroke: transparent;
 }
 
@@ -237,48 +243,49 @@ input:checked + .slider:before {
 }
 
 /* Plot 2 header dropdowns */
+
 .dropdown {
-    display:inline-flex;   
-    position:relative;
+    display: inline-flex;
+    position: relative;
 }
 
 .dropdown-button {
     width: 200px;
     height: auto;
-/*    text-align: center;*/
+    /*    text-align: center;*/
     color: #fff;
     box-sizing: border-box;
     padding: 12px 40px 10px 20px;
     border-radius: 0px;
-    position:relative;
+    position: relative;
     cursor: pointer;
-    transition: background .3s ease; 
+    transition: background .3s ease;
 }
 
 .dropdown-button:hover {
     transition: background .3s ease;
 }
 
-#women-button{
+#women-button {
     background: #007F75;
 }
 
-#male-button{
+#male-button {
     background: #FF7B5C;
 }
 
-#women-button.dropdown-button:hover{
+#women-button.dropdown-button:hover {
     background: #0e6962;
 }
 
-#male-button.dropdown-button:hover{
+#male-button.dropdown-button:hover {
     background: #ff5f3a;
 }
 
 
-.triangle{
+.triangle {
     font-size: 50%;
-    position:absolute;
+    position: absolute;
     right: 10px;
     top: 15px;
     bottom: 0;
@@ -288,86 +295,85 @@ input:checked + .slider:before {
 }
 
 /*percentage label */
-#percentSalary{
+
+#percentSalary {
     color: #007F75;
-    font-size: 220%; 
+    font-size: 220%;
     font-weight: 650;
-    vertical-align:bottom;
-/*
+    vertical-align: bottom;
+    /*
     display: inline-block;
     line-height: 30px;
 */
 }
 
 .dropdown ul.active {
-    visibility:visible;
+    visibility: visible;
     overflow: visible;
-    transition:all .3s ease;
-    transform:scaleY(1);
-    color:#0069d3;
+    transition: all .3s ease;
+    transform: scaleY(1);
+    color: #0069d3;
 }
 
 .dropdown ul {
     visibility: hidden;
     overflow: hidden;
-    color:#fff;
+    color: #fff;
     transform-origin: top;
-    padding:0;
+    padding: 0;
     list-style: none;
-    box-shadow: 0px 2px 6px 0 rgba(0,0,0,0.2);
-    position:absolute;
-    left:0px;
+    box-shadow: 0px 2px 6px 0 rgba(0, 0, 0, 0.2);
+    position: absolute;
+    left: 0px;
     bottom: 0px;
     margin-top: 2px;
     top: 100%;
-    min-width:100%; 
+    min-width: 100%;
     transition: all .3s ease;
 }
 
 .dropdown li {
     background: #fff;
-    color:#000;
+    color: #000;
     padding: 8px 10px 8px 15px;
     box-sizing: border-box;
-    cursor:pointer;
+    cursor: pointer;
     transition: background .2s ease;
-    position:relative;
+    position: relative;
 }
 
 
 .dropdown li:hover {
-    background:#dbdbdb;
+    background: #dbdbdb;
     transition: background .2s ease;
 }
 
 #women-category.dropdown li.check {
-  background:#32aca2
+    background: #32aca2
 }
 
 #male-category.dropdown li.check {
-  background:#FF7B5C;
+    background: #FF7B5C;
 }
 
 .dropdown li.check:after {
-  content:'';
-  position:absolute;
-  top:0;
-  bottom:0;
-  margin-top:auto;
-  transform:rotate(40deg);
-  margin-bottom:auto;
-  right:15px;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    transform: rotate(40deg);
+    margin-bottom: auto;
+    right: 15px;
 }
+
 .dropdown li.check:before {
-  content:'';
-  position:absolute;
-  top:6px;
-  bottom:0;
-  margin-top:auto;
-  transform:rotate(40deg);
-  margin-bottom:auto;
-  right:19px;
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 0;
+    margin-top: auto;
+    transform: rotate(40deg);
+    margin-bottom: auto;
+    right: 19px;
 }
-
-
-

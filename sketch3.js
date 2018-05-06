@@ -1,7 +1,6 @@
-var sketch3 = (function () { //use IIFE to avoid variable collision
+var sketch3 = (function () { //use IIFE to avoid variable name collision
     var valueLabelWidth = 80; // space reserved for value labels (right)
     var companyLabelWidth = 120; // space reserved for bar labels
-    var companyLabelPadding = 15; // padding between bar and bar labels (left)
     var gridLabelHeight = 18; // space reserved for gridline labels
     var gridChartOffset = 10; // space between start of grid and first bar
     var maxBarWidth = 700; // width of the bar with the max value
