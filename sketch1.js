@@ -53,7 +53,8 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
         var axisX = svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .attr("class", "axisX")
-            .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+            .call(d3.axisBottom(x)
+                  .ticks(20).tickFormat(d3.format("d")));
 
         // Add the Y Axis
         var axisY = svg.append("g")
@@ -65,7 +66,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .attr("class", "grid")
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x)
-                .ticks(10)
+                .ticks(20)
                 .tickSize(-height)
                 .tickFormat("")
             ).selectAll("line").style("stroke", "#ccc");
@@ -85,7 +86,6 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
         // add the Y gridlines
         svg.append("g")
             .attr("class", "grid")
-            //        .attr("transform", "translate(" + 0 + ")")
             .call(d3.axisLeft(y)
                 .ticks(10)
                 .tickSize(-width)
