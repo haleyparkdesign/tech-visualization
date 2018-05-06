@@ -2,7 +2,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
 
     // set the dimensions and margins of the graph
     var margin = {
-            top: 20,
+            top: 25,
             right: 20,
             bottom: 30,
             left: 50
