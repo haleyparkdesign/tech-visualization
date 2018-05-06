@@ -300,17 +300,14 @@ line {
 
 #percentSalary {
     color: #007F75;
-    <<<<<<< HEAD font-size: 220%;
     font-weight: 650;
-    vertical-align: bottom;
     /*
     display: inline-block;
     line-height: 30px;
 */
-    =======font-size: 250%;
+    font-size: 250%;
     font-weight: 650;
     vertical-align: bottom;
-    > > > > > > > d7f25d3492c26034f92a916094f355fa8b5088f6
 }
 
 .dropdown ul.active {
