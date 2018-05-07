@@ -113,9 +113,8 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
 
         svg.on("mousemove", function (d) {
                 var coords = d3.mouse(this);
-                console.log(coords);
 
-                var index = tooltipLinePos(d3.event.pageX - 150);
+                var index = tooltipLinePos(d3.event.pageX - 300);
                 var yPos = coords[1];
                 if (yPos < 52.28) {
                     yPos = 52.28;
@@ -127,7 +126,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
                     .style("opacity", "1");
 
                 tooltip
-                    .style("left", (xValues[index] + 160) + "px")
+                    .style("left", (xValues[index] + 320) + "px")
                     .style("top", 795 + yPos + "px")
                     .style("display", "block")
                     .html('Women earned<br><span class="gap">' +
