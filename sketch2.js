@@ -1,14 +1,14 @@
-var barWidth = 24; // width of one bar
+var barWidth = 22; // width of one bar
 var SalaryLabelWidth = 45; // on left 
 var SalaryLabelPadding = 15; // on left 
 var RaceSexLabelWidth = 10; // top of bars 
 var RaceSexLabelPadding = 15; // padding between bar and bar labels (bottom)
 var maxBarHeight = 700; // height of the bar with the max value
 var gridPaddingHorizontal = 60;
-var numYDivs = 6;
+var numYDivs = 8;
 var multiplier = 3;
 var width = 900;
-var height = maxBarHeight + SalaryLabelWidth + SalaryLabelPadding;
+var height = maxBarHeight + SalaryLabelWidth - 10;
 
 var selectedBarsToDisplayWomen = {
     race: "Average",

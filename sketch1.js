@@ -54,7 +54,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .attr("transform", "translate(0," + height + ")")
             .attr("class", "axisX")
             .call(d3.axisBottom(x)
-                  .ticks(20).tickFormat(d3.format("d")));
+                .ticks(20).tickFormat(d3.format("d")));
 
         // Add the Y Axis
         var axisY = svg.append("g")
@@ -122,13 +122,6 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .style("opacity", 1)
             .attr("stroke-dashoffset", 0);
 
-        svg.selectAll(".tick")
-            .each(function (d) {
-                if (d === 0) {
-                    this.remove();
-                }
-            });
-
         // remove axis path
         axisX.selectAll("path").style("stroke", "transparent");
         axisY.selectAll("path").style("stroke", "transparent");
@@ -141,6 +134,9 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .style("text-anchor", "end")
             .text("Median Weekly Earning ($)")
             .style("font-size", "12px");
+
+        //remove the first element of y axis text
+        axisY.select("text").remove();
 
         // Style the axis text
         axisX.selectAll("text")
