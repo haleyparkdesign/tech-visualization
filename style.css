@@ -102,15 +102,24 @@ a {
     margin-top: -12px;
 }
 
+.valueLabel,
 .toolTip {
     position: absolute;
+    font-size: .8em;
+    background: none repeat scroll 0 0 #fff;
+}
+
+.valueLabel {
+    padding: 5px;
+}
+
+.toolTip {
     display: none;
     min-width: 80px;
     height: auto;
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.7);
-    padding: 10px;
     color: #fff;
-    font-size: .8em;
+    padding: 10px;
     line-height: 1.2em;
     border-radius: 10px;
 }
@@ -139,6 +148,17 @@ a {
     line-height: 1.2em;
     border-radius: 10px;
     color: #282828;
+}
+
+#plot1 .toolTip {
+    border-radius: 0px;
+    text-align: center;
+}
+
+#plot1 .gap {
+    font-size: 1.2em;
+    line-height: 1.3em;
+    font-weight: 600;
 }
 
 .sketch3-container .interactivity span,

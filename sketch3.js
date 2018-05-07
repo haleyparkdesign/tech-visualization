@@ -163,8 +163,6 @@ var sketch3 = (function () { //use IIFE to avoid variable name collision
                             "Female: " + d.data.Female + "%<br>" +
                             "Male: " + d.data.Male + "%<br>");
                     }
-
-
                 })
                 .on("mouseout", function (d) {
                     tooltip.style("display", "none");
