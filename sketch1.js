@@ -47,7 +47,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
         x.domain(d3.extent(data, function (d) {
             return d.Year;
         }));
-        y.domain([700, 1600]);
+        y.domain([800, 1600]);
 
         // Add the X Axis
         var axisX = svg.append("g")
