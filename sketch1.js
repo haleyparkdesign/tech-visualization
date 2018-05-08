@@ -8,7 +8,10 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             left: 50
         },
         width = 900 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom;
+        height = 600 - margin.top - margin.bottom,
+        bisectDate = d3.bisector(function (d) {
+            return d.Year;
+        }).left;
 
     // set the ranges
     var x = d3.scaleLinear().range([0, width]);
@@ -39,6 +42,18 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
+    var bg = svg.append("rect")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("transform",
+            "translate(" + (-margin.left) + "," + (-margin.top) + ")")
+        .attr("fill", "transparent");
+
+    var gridX, gridY, axisX, axisY, plotDotsMales, plotDotsFemales;
+
+    var xValues = [];
+
+
     // Get the data
     d3.csv("wage_average_over_time.csv", type, function (error, data) {
         if (error) throw error;
@@ -47,6 +62,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
         x.domain(d3.extent(data, function (d) {
             return d.Year;
         }));
+        
         y.domain([800, 1600]);
 
         // Add the X Axis
@@ -62,35 +78,89 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .call(d3.axisLeft(y).ticks(10));
 
         // add the X gridlines
-        var gridX = svg.append("g")
+        gridX = svg.append("g")
             .attr("class", "grid")
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x)
                 .ticks(20)
                 .tickSize(-height)
                 .tickFormat("")
-            ).selectAll("line").style("stroke", "#ccc");
+            ).data(data)
 
-        gridX.selectAll(".tick").on("mousemove", function (d) {
-                toolTip
-                    .style("left", d3.event.pageX - 25 + "px")
-                    .style("top", d3.event.pageY - 40 + "px")
-                    .style("display", "inline-block")
-
-                toolTip.html("$" + d.women);
-            })
-            .on("mouseout", function (d) {
-                hover.style("display", "none");
-            })
+        gridX.selectAll("g").each(function (d) {
+            var positionString = ((d3.select(this).attr("transform")));
+            var commaIndex = positionString.indexOf(",");
+            var xPos = parseFloat(positionString.substring(10, commaIndex));
+            xValues.push(xPos);
+        });
 
         // add the Y gridlines
-        svg.append("g")
+        gridY = svg.append("g")
             .attr("class", "grid")
             .call(d3.axisLeft(y)
                 .ticks(10)
                 .tickSize(-width)
                 .tickFormat("")
             ).selectAll("line").style("stroke", "#ccc");
+
+        // Add the X Axis
+        axisX = svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("class", "axisX")
+            .call(d3.axisBottom(x)
+                .ticks(20).tickFormat(d3.format("d")));
+
+        // Add the Y Axis
+        axisY = svg.append("g")
+            .attr("class", "axisY")
+            .call(d3.axisLeft(y).ticks(10));
+
+        axisY.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -4)
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Median Weekly Earning ($)")
+            .style("font-size", "12px");
+
+        svg.on("mousemove", function (d) {
+                var coords = d3.mouse(this);
+
+                var index = tooltipLinePos(d3.event.pageX - 300);
+                var yPos = coords[1];
+                if (yPos < 52.28) {
+                    yPos = 52.28;
+                };
+
+                tooltipLine
+                    .attr("transform", "translate(" + xValues[index] + ",0)")
+                    .transition().duration(100)
+                    .style("opacity", "1");
+
+                tooltip
+                    .style("left", (xValues[index] + 320) + "px")
+                    .style("top", 795 + yPos + "px")
+                    .style("display", "block")
+                    .html('Women earned<br><span class="gap">' +
+                        Math.floor(data[index].women / data[index].men * 100) + "%</span>" +
+                        "<br>of men's wage.");
+            })
+            .on("mouseout", function (d) {
+                tooltipLine
+                    .transition().duration(100)
+                    .style("opacity", "0");
+
+                tooltip.style("display", "none");
+            });
+
+        var tooltipLine = svg.append("rect")
+            .attr("class", "tooltipline")
+            .attr("width", 1)
+            .attr("height", height)
+            .style("stroke", "#3c3c3c")
+            .style("stroke-width", 1)
+            .attr("opacity", "0");
 
         // Add the line path.
         var orangeLine = svg.append("path")
@@ -122,39 +192,8 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .style("opacity", 1)
             .attr("stroke-dashoffset", 0);
 
-        svg.selectAll(".tick")
-            .each(function (d) {
-                if (d === 0) {
-                    this.remove();
-                }
-            });
-
-        // remove axis path
-        axisX.selectAll("path").style("stroke", "transparent");
-        axisY.selectAll("path").style("stroke", "transparent");
-
-        axisY.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("x", -4)
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Median Weekly Earning ($)")
-            .style("font-size", "12px");
-
-        // Style the axis text
-        axisX.selectAll("text")
-            .style("fill", "#282828")
-            .attr("font-size", "15px")
-            .attr("font-family", "Work Sans");
-
-        axisY.selectAll("text")
-            .style("fill", "#282828")
-            .attr("font-size", "15px")
-            .attr("font-family", "Work Sans");
-
         //add dots 
-        var plotDotsMales = svg.append("g").attr("class", "dots");
+        plotDotsMales = svg.append("g").attr("class", "dots");
 
         plotDotsMales
             .selectAll(".maleDots")
@@ -168,20 +207,21 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .attr("cy", function (d) {
                 return y(d.men)
             })
-            .attr("r", 5).on("mousemove", function (d) {
-                hover
+            .attr("r", 5)
+            .on("mousemove", function (d) {
+                valueLabel
                     .style("left", d3.event.pageX - 25 + "px")
                     .style("top", d3.event.pageY - 40 + "px")
                     .style("display", "inline-block")
 
-                hover.html("$" + d.men);
+                valueLabel.html("$" + d.men);
             })
             .on("mouseout", function (d) {
-                hover.style("display", "none");
+                valueLabel.style("display", "none");
             });
 
 
-        var plotDotsFemales = svg.append("g").attr("class", "dots")
+        plotDotsFemales = svg.append("g").attr("class", "dots")
 
         plotDotsFemales
             .selectAll(".femaleDots")
@@ -197,34 +237,43 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             })
             .attr("r", 5)
             .on("mousemove", function (d) {
-                hover
+                valueLabel
                     .style("left", d3.event.pageX - 25 + "px")
                     .style("top", d3.event.pageY - 40 + "px")
                     .style("display", "inline-block")
 
-                hover.html("$" + d.women);
+                valueLabel.html("$" + d.women);
             })
             .on("mouseout", function (d) {
-                hover.style("display", "none");
+                valueLabel.style("display", "none");
             });
-    });
 
-    svg.selectAll("text")
-        .style("fill", "#282828")
-        .attr("font-size", "15px")
-        .attr("font-family", "Work Sans");
+        var styling = (function () {
+            svg.selectAll("text")
+                .style("fill", "#282828")
+                .attr("font-size", "15px")
+                .attr("font-family", "Work Sans");
+
+            gridX.selectAll("line").style("stroke", "#ccc");
+
+            // remove axis path
+            axisX.selectAll("path").style("stroke", "transparent");
+            axisY.selectAll("path").style("stroke", "transparent");
+
+            //remove the first element of y axis text
+            axisY.select("text").remove();
+        })();
+
+        styling;
+    });
 
     function type(d, i, columns) {
         for (var i = 0, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
         return d;
     }
 
-    var hover = d3.select("#plot1").append("div")
-        .attr("class", "hover")
-        .style("display", "none");
-
-    var toolTip = d3.select("#plot1").append("div")
-        .attr("class", "toolTip")
+    var valueLabel = d3.select("#plot1").append("div")
+        .attr("class", "valueLabel")
         .style("display", "none");
 
     var legend = svg.append("g")
@@ -247,6 +296,20 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
 
     legend.append("text").text("Women")
         .attr("transform", "translate(-8,5)");
+
+    var tooltip = d3.select("#plot1").append("div")
+        .attr("class", "toolTip")
+        .style("display", "none");
+
+    function tooltipLinePos(mouseX) {
+        var closestIndex = 0;
+        for (var i = 0; i < xValues.length; i++) {
+            if (Math.abs(xValues[i] - mouseX) < Math.abs(xValues[closestIndex] - mouseX)) {
+                closestIndex = i;
+            }
+        }
+        return closestIndex;
+    }
 })();
 
 sketch1;

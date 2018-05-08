@@ -1,33 +1,24 @@
 var sketch3 = (function () { //use IIFE to avoid variable name collision
-    var valueLabelWidth = 80; // space reserved for value labels (right)
     var companyLabelWidth = 120; // space reserved for bar labels
     var gridLabelHeight = 18; // space reserved for gridline labels
     var gridChartOffset = 10; // space between start of grid and first bar
     var maxBarWidth = 700; // width of the bar with the max value
     var exec = false;
+    var width = 900;
+    var height = 716;
 
     var svg = d3.select("#plot3").append("svg")
-        .attr("width", maxBarWidth + companyLabelWidth + valueLabelWidth)
-        .attr("height", 698),
-        margin = {
-            top: 20,
-            right: 60,
-            bottom: 30,
-            left: 40
-        },
-        width = +svg.attr("width"),
-        height = +svg.attr("height"),
+        .attr("width", width)
+        .attr("height", height),
         g = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         .attr('transform', 'translate(' + companyLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')');
-
 
     var x = d3.scaleLinear()
         .rangeRound([0, maxBarWidth]);
 
     var y = d3.scaleBand()
         .rangeRound([0, height])
-        .padding(0.3)
+        .padding(0.35)
         .align(0.1);
 
     var colors = d3.scaleOrdinal()
@@ -73,6 +64,7 @@ var sketch3 = (function () { //use IIFE to avoid variable name collision
     axisY.selectAll("line")
         .style("stroke", "transparent");
 
+    // get the data
     d3.csv("diversity.csv", type, function (error, data) {
         console.log(data);
         draw(); //initial draw
@@ -171,8 +163,6 @@ var sketch3 = (function () { //use IIFE to avoid variable name collision
                             "Female: " + d.data.Female + "%<br>" +
                             "Male: " + d.data.Male + "%<br>");
                     }
-
-
                 })
                 .on("mouseout", function (d) {
                     tooltip.style("display", "none");
