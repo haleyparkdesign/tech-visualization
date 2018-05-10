@@ -166,7 +166,7 @@ function draw() {
         .rangeRound([salaryRange[0] - lowerBoundBuffer, salaryRange[1] + upperBoundBuffer]);
 
     var salInt = function (d, i) {
-        return "$" + ySalaryInterval(i);
+        return ySalaryInterval(i);
     }
 
     var yScaleHeight = d3.scaleLinear().domain([0, numYDivs]).range([gridPaddingHorizontal, maxBarHeight + RaceSexLabelWidth]);
@@ -372,4 +372,9 @@ function draw() {
     draw.drawGreyBars = drawGreyedBars;
     draw.drawGreyBars([selectedBarsToDisplayWomen, selectedBarToDisplayMale]);
 
+    plot2.append("text")
+        .attr("x", 6)
+        .attr("y", 30)
+        .text("Median Weekly Earning ($)")
+        .style("font-size", "12px");
 }

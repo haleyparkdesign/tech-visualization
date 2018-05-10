@@ -148,6 +148,7 @@ a {
     line-height: 1.2em;
     border-radius: 10px;
     color: #282828;
+    margin-left: -20px;
 }
 
 #plot1 .toolTip {

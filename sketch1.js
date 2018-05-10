@@ -62,20 +62,8 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
         x.domain(d3.extent(data, function (d) {
             return d.Year;
         }));
-        
+
         y.domain([800, 1600]);
-
-        // Add the X Axis
-        var axisX = svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .attr("class", "axisX")
-            .call(d3.axisBottom(x)
-                  .ticks(20).tickFormat(d3.format("d")));
-
-        // Add the Y Axis
-        var axisY = svg.append("g")
-            .attr("class", "axisY")
-            .call(d3.axisLeft(y).ticks(10));
 
         // add the X gridlines
         gridX = svg.append("g")
@@ -104,31 +92,24 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             ).selectAll("line").style("stroke", "#ccc");
 
         // Add the X Axis
-        axisX = svg.append("g")
+        var axisX = svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .attr("class", "axisX")
             .call(d3.axisBottom(x)
                 .ticks(20).tickFormat(d3.format("d")));
 
         // Add the Y Axis
-        axisY = svg.append("g")
+        var axisY = svg.append("g")
             .attr("class", "axisY")
             .call(d3.axisLeft(y).ticks(10));
-
-        axisY.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("x", -4)
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Median Weekly Earning ($)")
-            .style("font-size", "12px");
 
         svg.on("mousemove", function (d) {
                 var coords = d3.mouse(this);
 
                 var index = tooltipLinePos(d3.event.pageX - 300);
                 var yPos = coords[1];
+
+                //Keep the tooltip inside plot1
                 if (yPos < 52.28) {
                     yPos = 52.28;
                 };
@@ -143,7 +124,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
                     .style("top", 795 + yPos + "px")
                     .style("display", "block")
                     .html('Women earned<br><span class="gap">' +
-                        Math.floor(data[index].women / data[index].men * 100) + "%</span>" +
+                        Math.round(data[index].women / data[index].men * 100) + "%</span>" +
                         "<br>of men's wage.");
             })
             .on("mouseout", function (d) {
@@ -170,8 +151,8 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .style("opacity", 0)
             .style("stroke", "#ff7b5c").style("stroke-width", 2)
             .attr("d", menLine)
-            .attr("stroke-dasharray", 1000 + ", " + 1000)
-            .attr("stroke-dashoffset", 1000)
+            .attr("stroke-dasharray", 1200 + ", " + 1200)
+            .attr("stroke-dashoffset", 1200)
             .transition()
             .duration(3000)
             .style("opacity", 1)
@@ -185,8 +166,8 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .style("opacity", 0)
             .style("stroke", "#007f75").style("stroke-width", 2)
             .attr("d", womenLine)
-            .attr("stroke-dasharray", 1000 + ", " + 1000)
-            .attr("stroke-dashoffset", 1000)
+            .attr("stroke-dasharray", 1200 + ", " + 1200)
+            .attr("stroke-dashoffset", 1200)
             .transition()
             .duration(3000)
             .style("opacity", 1)
@@ -211,7 +192,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .on("mousemove", function (d) {
                 valueLabel
                     .style("left", d3.event.pageX - 25 + "px")
-                    .style("top", d3.event.pageY - 40 + "px")
+                    .style("top", d3.event.pageY - 30 + "px")
                     .style("display", "inline-block")
 
                 valueLabel.html("$" + d.men);
@@ -239,7 +220,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .on("mousemove", function (d) {
                 valueLabel
                     .style("left", d3.event.pageX - 25 + "px")
-                    .style("top", d3.event.pageY - 40 + "px")
+                    .style("top", d3.event.pageY - 30 + "px")
                     .style("display", "inline-block")
 
                 valueLabel.html("$" + d.women);
@@ -249,9 +230,19 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             });
 
         var styling = (function () {
+
+            axisY.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("x", -4)
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Median Weekly Earning ($)")
+                .style("font-size", "12px");
+
             svg.selectAll("text")
                 .style("fill", "#282828")
-                .attr("font-size", "15px")
+                .attr("font-size", "14px")
                 .attr("font-family", "Work Sans");
 
             gridX.selectAll("line").style("stroke", "#ccc");
@@ -260,8 +251,8 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             axisX.selectAll("path").style("stroke", "transparent");
             axisY.selectAll("path").style("stroke", "transparent");
 
-            //remove the first element of y axis text
-            axisY.select("text").remove();
+            //remove the first element of y axis text to avoid space clog
+            axisY.select(".tick").remove();
         })();
 
         styling;
