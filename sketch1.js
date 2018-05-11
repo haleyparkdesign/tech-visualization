@@ -49,7 +49,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             "translate(" + (-margin.left) + "," + (-margin.top) + ")")
         .attr("fill", "transparent");
 
-    var gridX, gridY, axisX, axisY, plotDotsMales, plotDotsFemales;
+    var gridX, gridY, axisX, axisY, plotDotsMales, plotDotsFemales, orangeLine, greenLine;
 
     var xValues = [];
 
@@ -104,6 +104,8 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .call(d3.axisLeft(y).ticks(10));
 
         svg.on("mousemove", function (d) {
+                var left;
+
                 var coords = d3.mouse(this);
 
                 var index = tooltipLinePos(d3.event.pageX - 300);
@@ -114,13 +116,20 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
                     yPos = 52.28;
                 };
 
+                if (window.innerWidth >= 900) {
+                    left = ((window.innerWidth - 900) / 2 + 50)
+                } else {
+                    left = 50;
+                }
+
+                console.log(left);
                 tooltipLine
                     .attr("transform", "translate(" + xValues[index] + ",0)")
                     .transition().duration(100)
                     .style("opacity", "1");
 
                 tooltip
-                    .style("left", (xValues[index] + 320) + "px")
+                    .style("left", (xValues[index] + left) + "px")
                     .style("top", 795 + yPos + "px")
                     .style("display", "block")
                     .html('Women earned<br><span class="gap">' +
@@ -144,34 +153,22 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
             .attr("opacity", "0");
 
         // Add the line path.
-        var orangeLine = svg.append("path")
+        orangeLine = svg.append("path")
             .data([data])
             .attr("class", "line")
             .style("fill", "none")
             .style("opacity", 0)
             .style("stroke", "#ff7b5c").style("stroke-width", 2)
-            .attr("d", menLine)
-            .attr("stroke-dasharray", 1200 + ", " + 1200)
-            .attr("stroke-dashoffset", 1200)
-            .transition()
-            .duration(3000)
-            .style("opacity", 1)
-            .attr("stroke-dashoffset", 0);
+            .attr("d", menLine);
 
         // Add the line2 path.
-        svg.append("path")
+        greenLine = svg.append("path")
             .data([data])
             .attr("class", "line")
             .style("fill", "none")
             .style("opacity", 0)
             .style("stroke", "#007f75").style("stroke-width", 2)
-            .attr("d", womenLine)
-            .attr("stroke-dasharray", 1200 + ", " + 1200)
-            .attr("stroke-dashoffset", 1200)
-            .transition()
-            .duration(3000)
-            .style("opacity", 1)
-            .attr("stroke-dashoffset", 0);
+            .attr("d", womenLine);
 
         //add dots 
         plotDotsMales = svg.append("g").attr("class", "dots");
@@ -270,7 +267,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
     var legend = svg.append("g")
         .attr("class", "legend")
         .attr("transform",
-            "translate(" + (width - 50) + "," + (-15) + ")");
+            "translate(" + (width - 42) + "," + (-15) + ")");
 
     legend.append("circle")
         .attr("r", 5)
@@ -301,6 +298,33 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
         }
         return closestIndex;
     }
+
+    var drawn = false;
+
+    window.onscroll = function () {
+        if (drawn == false) {
+            if (document.documentElement.scrollTop > 600) {
+                orangeLine
+                    .attr("stroke-dasharray", 1200 + ", " + 1200)
+                    .attr("stroke-dashoffset", 1200)
+                    .transition()
+                    .duration(3000)
+                    .style("opacity", 1)
+                    .attr("stroke-dashoffset", 0);
+
+
+                greenLine
+                    .attr("stroke-dasharray", 1200 + ", " + 1200)
+                    .attr("stroke-dashoffset", 1200)
+                    .transition()
+                    .duration(3000)
+                    .style("opacity", 1)
+                    .attr("stroke-dashoffset", 0);
+
+                drawn = true;
+            }
+        }
+    };
 })();
 
 sketch1;
