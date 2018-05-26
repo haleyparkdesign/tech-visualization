@@ -49,6 +49,12 @@ a {
     justify-content: center;
 }
 
+@media(min-width: 1440px) {
+    .dollar {
+        background-size: contain;
+    }
+}
+
 @media(max-width: 1024px) {
     .dollar {
         background-attachment: scroll;
