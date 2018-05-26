@@ -263,6 +263,10 @@ line {
     font-size: 15px;
 }
 
+#plot3 select {
+    -webkit-font-size: 15px;
+}
+
 .footer {
     text-align: center;
     background-color: #f2f2f2;
@@ -332,10 +336,6 @@ line {
 #percentSalary {
     color: #007F75;
     font-weight: 650;
-    /*
-    display: inline-block;
-    line-height: 30px;
-*/
     font-size: 250%;
     font-weight: 650;
     vertical-align: bottom;

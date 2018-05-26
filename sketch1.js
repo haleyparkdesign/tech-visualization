@@ -296,14 +296,15 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
                 closestIndex = i;
             }
         }
-        return closestIndex;
+        return closestIndex;x
     }
 
     var drawn = false;
 
     window.onscroll = function () {
+       console.log(window.pageYOffset);
         if (drawn == false) {
-            if (document.documentElement.scrollTop > 600) {
+            if (document.documentElement.scrollTop > 500 || window.pageYOffset > 500) {
                 orangeLine
                     .attr("stroke-dasharray", 1200 + ", " + 1200)
                     .attr("stroke-dashoffset", 1200)
