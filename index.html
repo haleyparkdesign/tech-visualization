@@ -93,6 +93,18 @@
         <p>Made with ☕ and 💕 by Daniela Carrasco and <a href="http://haleypark.design/" target="_blank">Haley Park</a>, for <a href="https://irenedelatorre.github.io/MIT-Design-Studio-Information-and-Visualization/">4.032 Information and Visualization</a>.</p>
     </div>
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+        d3.select('.masthead').style("height", window.innerWidth / 1440 * 627 + "px");
+        console.log(window.innerWidth);
+
+        window.addEventListener("resize", function() {
+            console.log(window.innerWidth);
+            if (window.innerWidth > 1440) {
+                d3.select('.masthead').style("height", window.innerWidth / 1440 * 627 + "px");
+            }
+        });
+
+    </script>
     <script src="sketch1.js"></script>
     <script src="sketch2.js"></script>
     <script src="sketch3.js"></script>
