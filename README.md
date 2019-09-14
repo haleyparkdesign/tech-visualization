@@ -11,5 +11,5 @@ A [webpage](https://haleypark.design/tech-visualization/
 ![title](title.png "title")
 
 ## Team
-Haley Park([@hyojeongpark](https://github.com/hyojeongpark)),
+Haley Park([@haleyparkdesign](https://github.com/haleyparkdesign)),
 Daniela Carrasco([@danicarr](https://github.com/danicarr))
