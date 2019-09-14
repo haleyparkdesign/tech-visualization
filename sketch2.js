@@ -97,7 +97,7 @@ function initOptionHeader() {
 initOptionHeader();
 
 //getting data
-d3.csv("payGap_race_sex3.csv", function (data) {
+d3.csv("./data/payGap_race_sex3.csv", function (data) {
     data.forEach(function (d) {
         d.race = d.race;
         d.sex = d.sex;

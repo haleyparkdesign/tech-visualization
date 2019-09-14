@@ -65,7 +65,7 @@ var sketch3 = (function () { //use IIFE to avoid variable name collision
         .style("stroke", "transparent");
 
     // get the data
-    d3.csv("diversity.csv", type, function (error, data) {
+    d3.csv("./data/diversity.csv", type, function (error, data) {
         console.log(data);
         draw(); //initial draw
 

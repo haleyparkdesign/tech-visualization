@@ -55,7 +55,7 @@ var sketch1 = (function () { //use IIFE to avoid variable name collision
 
 
     // Get the data
-    d3.csv("wage_average_over_time.csv", type, function (error, data) {
+    d3.csv("./data/wage_average_over_time.csv", type, function (error, data) {
         if (error) throw error;
 
         // Scale the range of the data
