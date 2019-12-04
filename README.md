@@ -8,7 +8,7 @@ Students were asked to deliver a free project with data of our choice.
 A [webpage](https://haleyparkdesign.github.io/tech-visualization/
 ) with three interactive visualizations with the data we found and cleaned.
 
-![title](title.png "title")
+![title](https://p47.f4.n0.cdn.getcloudapp.com/items/7KuyJLj1/title.png?v=2bb365e73c339dce8b508005a4e392c5)
 
 ## Team
 Haley Park([@haleyparkdesign](https://github.com/haleyparkdesign)),
